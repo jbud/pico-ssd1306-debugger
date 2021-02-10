@@ -12,7 +12,7 @@ SSD1306::SSD1306()
     _pages = _height / 8;
     _i2cAddr = 0x3C;
     _external_vcc = false;
-    scr[pages*width+1];
+    _scr[pages*width+1];
 }
 
 SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
@@ -22,7 +22,7 @@ SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
     _pages = _height / 8;
     _i2cAddr = addr;
     _external_vcc = false;
-    scr[pages*width+1];
+    _scr[pages*width+1];
 }
 
 SSD1306::begin()
