@@ -21,7 +21,11 @@ SSD1306::SSD1306()
     _pages = _height / 8;
     _i2cAddr = 0x3C;
     _external_vcc = false;
+<<<<<<< HEAD
 	_i=0;
+=======
+    _scr[pages*width+1];
+>>>>>>> origin/master
 }
 
 SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
@@ -31,7 +35,11 @@ SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
     _pages = _height / 8;
     _i2cAddr = addr;
     _external_vcc = false;
+<<<<<<< HEAD
 	_i=0;
+=======
+    _scr[pages*width+1];
+>>>>>>> origin/master
 }
 
 void SSD1306::writeln(char* v)
