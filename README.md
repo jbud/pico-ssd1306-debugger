@@ -21,3 +21,5 @@ void main(){
 * Add additional fonts
 * Move private functions to correct access level
 * Enhance this library to be a full graphics driver for the SSD1306 OLED
+* Comment functions for intellisense
+* Fully document library
