@@ -18,6 +18,9 @@ void main(){
 }
 ```
 
+### See it in action
+![Temp_Sensor](https://github.com/jbud/pico-ssd1306-debugger/blob/master/images/IMG_0555.png?raw=true)
+
 ### TODO
 * Refine command functions to increase framerate
 * Add additional fonts
