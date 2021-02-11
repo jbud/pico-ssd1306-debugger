@@ -15,3 +15,9 @@ void main(){
   while(true){}; // hault here
 }
 ```
+
+### TODO
+* Refine command functions to increase framerate
+* Add additional fonts
+* Move private functions to correct access level
+* Enhance this library to be a full graphics driver for the SSD1306 OLED
