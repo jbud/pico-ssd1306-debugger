@@ -3,8 +3,8 @@
   Created by Joe Jackson, February 10, 2021.
   Released into the public domain.
 */
-#ifndef LIB_SSD1306_h
-#define LIB_SSD1306_h
+#ifndef SSD1306_h
+#define SSD1306_h
 
 #include <stdint.h>
 #include <string.h>
@@ -31,51 +31,95 @@
 #define SET_VCOM_DESEL 0xDB
 #define SET_CHARGE_PUMP 0x8D
 
+#ifndef NO_ADAFRUIT_SSD1306_COLOR_COMPATIBILITY
+#define BLACK SSD1306_BLACK     ///< Draw 'off' pixels
+#define WHITE SSD1306_WHITE     ///< Draw 'on' pixels
+#define INVERSE SSD1306_INVERSE ///< Invert pixels
+#endif
+/// fit into the SSD1306_ naming scheme
+#define SSD1306_BLACK 0   ///< Draw 'off' pixels
+#define SSD1306_WHITE 1   ///< Draw 'on' pixels
+#define SSD1306_INVERSE 2 ///< Invert pixels
+
+#define SSD1306_MEMORYMODE 0x20          ///< See datasheet
+#define SSD1306_COLUMNADDR 0x21          ///< See datasheet
+#define SSD1306_PAGEADDR 0x22            ///< See datasheet
+#define SSD1306_SETCONTRAST 0x81         ///< See datasheet
+#define SSD1306_CHARGEPUMP 0x8D          ///< See datasheet
+#define SSD1306_SEGREMAP 0xA0            ///< See datasheet
+#define SSD1306_DISPLAYALLON_RESUME 0xA4 ///< See datasheet
+#define SSD1306_DISPLAYALLON 0xA5        ///< Not currently used
+#define SSD1306_NORMALDISPLAY 0xA6       ///< See datasheet
+#define SSD1306_INVERTDISPLAY 0xA7       ///< See datasheet
+#define SSD1306_SETMULTIPLEX 0xA8        ///< See datasheet
+#define SSD1306_DISPLAYOFF 0xAE          ///< See datasheet
+#define SSD1306_DISPLAYON 0xAF           ///< See datasheet
+#define SSD1306_COMSCANINC 0xC0          ///< Not currently used
+#define SSD1306_COMSCANDEC 0xC8          ///< See datasheet
+#define SSD1306_SETDISPLAYOFFSET 0xD3    ///< See datasheet
+#define SSD1306_SETDISPLAYCLOCKDIV 0xD5  ///< See datasheet
+#define SSD1306_SETPRECHARGE 0xD9        ///< See datasheet
+#define SSD1306_SETCOMPINS 0xDA          ///< See datasheet
+#define SSD1306_SETVCOMDETECT 0xDB       ///< See datasheet
+
+#define SSD1306_SETLOWCOLUMN 0x00  ///< Not currently used
+#define SSD1306_SETHIGHCOLUMN 0x10 ///< Not currently used
+#define SSD1306_SETSTARTLINE 0x40  ///< See datasheet
+
+#define SSD1306_EXTERNALVCC 0x01  ///< External display voltage source
+#define SSD1306_SWITCHCAPVCC 0x02 ///< Gen. display voltage from 3.3V
+
+#define SSD1306_RIGHT_HORIZONTAL_SCROLL 0x26              ///< Init rt scroll
+#define SSD1306_LEFT_HORIZONTAL_SCROLL 0x27               ///< Init left scroll
+#define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29 ///< Init diag scroll
+#define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A  ///< Init diag scroll
+#define SSD1306_DEACTIVATE_SCROLL 0x2E                    ///< Stop scroll
+#define SSD1306_ACTIVATE_SCROLL 0x2F                      ///< Start scroll
+#define SSD1306_SET_VERTICAL_SCROLL_AREA 0xA3             ///< Set scroll range
+
 typedef uint8_t u8;
+
 
 class SSD1306
 {
 public:
     SSD1306();
-    SSD1306(uint8_t w, uint8_t h, uint8_t addr);
+    SSD1306(u8 w, u8 h, u8 addr);
     void writeln(char* v);
     void print(char* v);
     void begin();
-    void init_i2c(uint8_t port, uint8_t sda_pin, uint8_t scl_pin);
+    void init_i2c(i2c_inst* port, u8 sda_pin, u8 scl_pin);
     void send(u8 v1, u8 v2);
     void init_display();
     void write_cmd(u8 cmd);
-    void send(u8 v1, u8 v2);
     void fill_scr(u8 v);
     void show_scr();
-    void poweroff();
-    void poweron();
-    void contrast(u8 contrast);
-    void invert(u8 invert);
+    void contrast(bool contrast);
+    void invert(bool invert);
     void draw_pixel(int16_t x, int16_t y, int color);
-    void draw_bitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w,
+    void draw_bitmap(int16_t x, int16_t y, const u8 bitmap[], int16_t w,
                               int16_t h, uint16_t color);
     void draw_letter_at(u8 x, u8 y, char c);
     void draw_letter(char c);
     void pixel(int x, int y);
-    void draw_pixel(int16_t x, int16_t y, int color);
-    void ssd1306_println(const char* str);
+    void SSD1306_println(const char* str);
+	void SSD1306_print(const char* str);
     void display();
     void clearDisplay();
+	void setCursor(u8 x, u8 y);
 private:
-    int _width;
-    int _height;
-    int _pages;
-    int _cursorx;
-    int _cursory;
-    uint8_t _port;
-    uint8_t _sda_pin;
-    uint8_t _scl_pin;
-    int _i2cAddr;
+    u8 _width;
+    u8 _height;
+    u8 _pages;
+    u8 _cursorx;
+    u8 _cursory;
+    i2c_inst* _port;
+    u8 _sda_pin;
+    u8 _scl_pin;
+    u8 _i2cAddr;
     int _i;
-    uint8_t _scr[];
     bool _external_vcc;
-    SSD1306 _display;
+	  u8 i2caddr, vccstate, page_end;
+    u8 buffer[1025];
 };
-
 #endif
