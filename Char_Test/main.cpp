@@ -8,28 +8,24 @@
 #include "hardware/adc.h"
 #include "../ssd1306.h"
 
-
 int main()
 {
-    stdio_init_all();
-    adc_init();
-    adc_gpio_init(26);
-    adc_select_input(0);
-    SSD1306 display(128, 64, 0x3C, false);   // setup the object
+    SSD1306 display(128, 64, 0x3C, true);   // setup the object
     display.init_i2c(i2c0, 4, 5);     // start i2c
     display.init_display();
     char c[50];
-    //display.setCursor(0,0);
+    uint8_t dz = 0;
     while(true){
         display.setCursor(0,0);
-        //float f = 3.3/65535;
-        const float conversion_factor = 3.3f / (1 << 12);
-        uint16_t result = adc_read();
-        sprintf(c, "ADC: %.4fV", result * conversion_factor);
+        sprintf(c, "Char #%d: %c", dz,dz);
         display.print(c);  // write data to buffer
         display.display();
-        //sleep_ms(250);
-        //display.clearDisplay();
+        dz++;
+        sleep_ms(250);
+        if (dz > 254){
+            display.clearDisplay();
+            dz = 0;
+        }
     }
     return 0;
 }

@@ -12,6 +12,7 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "font.h"
+#include "font2.h"
 
 #define SET_CONTRAST 0x81
 #define SET_ENTIRE_ON 0xA4
@@ -84,7 +85,7 @@ class SSD1306
 {
 public:
     SSD1306();
-    SSD1306(u8 w, u8 h, u8 addr);
+    SSD1306(u8 w, u8 h, u8 addr,bool extfont);
     void writeln(char* v);
     void print(char* v);
     void begin();
@@ -119,7 +120,8 @@ private:
     u8 _i2cAddr;
     int _i;
     bool _external_vcc;
-	  u8 i2caddr, vccstate, page_end;
+    bool _extfont;
+	u8 i2caddr, vccstate, page_end;
     u8 buffer[1025];
 };
 #endif

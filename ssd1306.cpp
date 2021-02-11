@@ -22,9 +22,10 @@ SSD1306::SSD1306()
     _i2cAddr = 0x3C;
     _external_vcc = false;
 	_i=0;
+	_extfont = false;
 }
 
-SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
+SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr, bool extfont = false)
 {
     _width = w;
     _height = h;
@@ -32,6 +33,7 @@ SSD1306::SSD1306(uint8_t w, uint8_t h, uint8_t addr)
     _i2cAddr = addr;
     _external_vcc = false;
 	_i=0;
+	_extfont = extfont;
 }
 
 void SSD1306::writeln(char* v)
@@ -50,7 +52,7 @@ void SSD1306::writeln(char* v)
 
 void SSD1306::print(char* v)
 {
-    clearDisplay();
+    //clearDisplay();
     setCursor(0, 0);
     SSD1306_print(v);
     display();
@@ -272,16 +274,24 @@ void SSD1306::draw_bitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t 
 void SSD1306::draw_letter_at(u8 x, u8 y, char c)
 {
 	if(c< ' ' || c>  0x7F) c = '?'; // 0x7F is the DEL key
-
-	int offset = 4 + (c - ' ' )*6;
-	for(int col = 0 ; col < 6; col++) {
-		u8 line =  ssd1306_font6x8[offset+col];
-		for(int row =0; row <8; row++) {
-			draw_pixel(x+col, y+row, line & 1);
-			line >>= 1;
+	if (!_extfont){
+		int offset = 4 + (c - ' ' )*6;
+		for(int col = 0 ; col < 6; col++) {
+			u8 line =  ssd1306_font6x8[offset+col];
+			for(int row =0; row <8; row++) {
+				draw_pixel(x+col, y+row, line & 1);
+				line >>= 1;
+			}
+		}
+	} else {
+		for (int8_t i = 0; i < 5; i++) { // Char bitmap = 5 columns
+			uint8_t line = glcd5x7ascii[c*5+i];
+			for (int8_t j = 0; j < 8; j++, line >>= 1) 
+			{
+				draw_pixel(x + i, y + j, line & 1);	
+			}
 		}
 	}
-
 	for(int row = 0; row<8; row++) {
 		draw_pixel(x+6, y+row, 0);
 		draw_pixel(x+7, y+row, 0);
