@@ -3,6 +3,8 @@ Debugging output for Raspberry PICO using OLED display (SSD1306) and PICO C++ SD
 
 ## example implementation
 
+Examples are now included! check out the [Temp_Sensor](Temp_Sensor/main.cpp) example or others in this repo!
+
 ```C++
 #include "ssd1306.h"
 
