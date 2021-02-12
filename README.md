@@ -9,12 +9,18 @@ Examples are now included! check out the [Temp_Sensor](Temp_Sensor/main.cpp) exa
 #include "ssd1306.h"
 
 void main(){
-  SSD1306 display(128, 64, 0x3C);   // setup the object
-  display.init_i2c(i2c0, 4, 5);     // start i2c
-  display.init_display();           // initialize the display
-  display.writeln("Hello World!");  // write data to buffer
-  display.display();                // draw the buffer!
-  while(true){}; // hault here
+    SSD1306 display(128, 64, 0x3C, false);    // setup the object
+    display.init_i2c(i2c0, 4, 5);             // start i2c
+    display.init_display();                   // send commands to initialize the SSD1306
+    char c[50];
+    int i=0;                                  // var to debug
+    display.setCursor(0,0);                   // start at top left of screen 0 x 0 pixels
+    while(true){
+        sprintf(c, "(int) i: %d",i);          // prepare output
+        display.writeln(c);                   // write data to buffer
+        display.display();
+        i++;
+        sleep_ms(250);                        // Wait 1/4 second and proceed
 }
 ```
 
