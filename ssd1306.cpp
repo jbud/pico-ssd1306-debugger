@@ -249,7 +249,14 @@ void SSD1306::draw_pixel(int16_t x, int16_t y, int color)
 	}
 
 }
-
+u8 SSD1306::get_height()
+{
+	return _height;
+}
+u8 SSD1306::get_width()
+{
+	return _width;	
+}
 void SSD1306::draw_bitmap(int16_t x, int16_t y, const uint8_t bitmap[], int16_t w,
                               int16_t h, uint16_t color) {
 

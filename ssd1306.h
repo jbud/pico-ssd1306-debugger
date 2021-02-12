@@ -108,6 +108,8 @@ public:
     void display();
     void clearDisplay();
 	void setCursor(u8 x, u8 y);
+    u8 get_height();
+    u8 get_width();
 private:
     u8 _width;
     u8 _height;
