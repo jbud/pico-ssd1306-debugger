@@ -11,9 +11,6 @@
 #include "hardware/i2c.h"
 #include "ssd1306.h"
 
-
-
-
 SSD1306::SSD1306()
 {
     _width = 128;
@@ -63,7 +60,7 @@ void SSD1306::init_i2c(i2c_inst* port, uint8_t sda_pin = 4, uint8_t scl_pin = 5)
 	_port = port;
     _sda_pin = sda_pin;
     _scl_pin = scl_pin;
-	i2c_init(_port, 100 * 1000);
+	i2c_init(_port, 400 * 1000);
 	gpio_set_function(sda_pin, GPIO_FUNC_I2C);
 	gpio_set_function(scl_pin, GPIO_FUNC_I2C);
 	gpio_pull_up(sda_pin);
@@ -72,7 +69,7 @@ void SSD1306::init_i2c(i2c_inst* port, uint8_t sda_pin = 4, uint8_t scl_pin = 5)
 
 void SSD1306::init_display()
 {
-	/*
+	/* // these are the default initialization commands by adafruit.
 	u8 cmds[] = {
 		SSD1306_DISPLAYOFF,         // 0xAE
 		SSD1306_SETDISPLAYCLOCKDIV, // 0xD5
@@ -176,7 +173,7 @@ void SSD1306::clearDisplay()
 {
     fill_scr(0);
 	//sleep_ms(25);
-    display();
+    //display();
 	//sleep_ms(250);
 }
 
